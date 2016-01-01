@@ -6,11 +6,24 @@ require 'pusher-client'
 require 'mem'
 
 module Idobata
+	
+	def self.logger
+		@logger ||= begin
+			require 'logger'
+			Logger.new(STDOUT)
+		end
+	end
+
+	def self.logger=(logger)
+		@logger = logger
+	end
+	
 	class Bot
 
 		include Mem
 
 		def run
+			PusherClient.logger = Idobata.logger
 			is_connected do 
 				join_channel
 				log_message
@@ -113,7 +126,7 @@ module Idobata
 		end
 
 		def socket
-			PusherClient::Socket.new(idobata_pusher_key, encrypted: true)
+			PusherClient::Socket.new(idobata_pusher_key, {encrypted: true, logger: Idobata.logger})
 		end
 
 		def connect
@@ -148,7 +161,7 @@ module Idobata
 
 		def log_message
 			channel.bind('message_created') do |message_json|
-				pp JSON.parse message_json
+				logger.debug("Idobata : Send [" + PP.pp( JSON.parse message_json, '') + "]")
 			end
 		end
 
