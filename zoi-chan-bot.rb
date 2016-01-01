@@ -56,6 +56,9 @@ module Idobata
 				'/ajax/services/search/images?'+params
 			)
 			responseJson = JSON.parse(response)
+			if responseJson['responseData'].nil?
+				return nil
+			end
 			responseResults = responseJson['responseData']['results']
 			responseResults.at( rand(8) )['url']
 		end
