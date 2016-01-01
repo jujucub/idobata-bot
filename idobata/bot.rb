@@ -161,7 +161,6 @@ module Idobata
 
 		def log_message
 			channel.bind('message_created') do |message_json|
-				logger.debug("Idobata : Send [" + PP.pp( JSON.parse message_json, '') + "]")
 			end
 		end
 

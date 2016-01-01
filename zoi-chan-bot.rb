@@ -63,7 +63,6 @@ module Idobata
 		def get_lgtm_url()
 			response = Net::HTTP.get('www.lgtm.in','/g').force_encoding('utf-8')
 			/value="(.*)" class="form-control" id="imageUrl"/ =~ response
-			pp $1
 			$1
 		end
 	end
